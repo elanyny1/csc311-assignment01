@@ -7,46 +7,76 @@ package edu.farmingdale.csc311.fleet;
  * @author YOUR NAME HERE
  */
 public abstract class Vehicle implements Honkable {
-
-    /* ------------------------------------------------------------------
-     * TODO-02     commit: TODO-02: add Vehicle fields and constructor
-     *
-     * Declare these nine private fields. Mark vin, make, model, fuelType
-     * and engineSize final; they get no setters.
-     *
-     *      vin             String     17 characters
-     *      make            String
-     *      model           String
-     *      year            int
-     *      color           String
-     *      wheels          int
-     *      engineSize      double     liters
-     *      fuelType        FuelType
-     *      fuelCapacity    double     gallons, or kWh when electric
-     *
-     * Then write the constructor. Check every argument before you store it
-     * and throw IllegalArgumentException when a rule is broken. The message
-     * must name the field and show the bad value. Rules:
-     *
-     *      vin            not null, exactly 17 characters after trimming,
-     *                     stored in upper case
-     *      make           not null, not blank, stored trimmed
-     *      model          same as make
-     *      color          same as make
-     *      year           1900 through 2100
-     *      wheels         2 through 18
-     *      fuelType       not null
-     *      engineSize     when fuelType.hasEngine() is true: above 0.0 and
-     *                     at most 8.5. Otherwise it must be exactly 0.0.
-     *      fuelCapacity   above 0.0
-     *
-     * The make/model/color check is the same three times. Write it once as
-     * a private static helper and call it three times.
-     * ------------------------------------------------------------------ */
+    private final String vin;
+    private final String make;
+    private final String model;
+    private int year;
+    private String color;
+    private int wheels;
+    private final double engineSize;
+    private final FuelType fuelType;
+    private double fuelCapacity;
 
     protected Vehicle(String vin, String make, String model, int year, String color,
                       int wheels, double engineSize, FuelType fuelType, double fuelCapacity) {
-        throw new UnsupportedOperationException("TODO-02");
+
+        if (vin == null || vin.trim().length() != 17) {
+            throw new IllegalArgumentException("Invalid value vin: " + vin);
+        }
+
+        make = requireText("make", make);
+        model = requireText("model", model);
+        color = requireText("color", color);
+
+        if (year < 1900 || year > 2100) {
+            throw new IllegalArgumentException("Invalid value year: " + year);
+        }
+
+        if (wheels < 2 || wheels > 18) {
+            throw new IllegalArgumentException("Invalid value wheels: " + wheels);
+        }
+
+        if (fuelType == null) {
+            throw new IllegalArgumentException("Invalid value fuelType: " + fuelType);
+        }
+
+        if (fuelType.hasEngine()) {
+            if (engineSize <= 0.0 || engineSize > 8.5) {
+                throw new IllegalArgumentException(
+                        "Invalid value engineSize: " + engineSize
+                );
+            }
+        } else if (engineSize != 0.0) {
+            throw new IllegalArgumentException(
+                    "Invalid value engineSize: " + engineSize
+            );
+        }
+
+        if (fuelCapacity <= 0.0) {
+            throw new IllegalArgumentException(
+                    "Invalid value fuelCapacity: " + fuelCapacity
+            );
+        }
+
+        this.vin = vin.trim().toUpperCase();
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.color = color;
+        this.wheels = wheels;
+        this.engineSize = engineSize;
+        this.fuelType = fuelType;
+        this.fuelCapacity = fuelCapacity;
+    }
+
+    private static String requireText(String field, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Invalid value " + field + ": " + value
+            );
+        }
+
+        return value.trim();
     }
 
     /* ------------------------------------------------------------------
