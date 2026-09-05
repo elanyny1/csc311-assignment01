@@ -7,41 +7,36 @@ package edu.farmingdale.csc311.fleet;
  */
 public enum FuelType {
 
-    /* ------------------------------------------------------------------
-     * TODO-01     commit: TODO-01: add FuelType data and lookup
-     *
-     * Each constant carries three values:
-     *
-     *      constant   label        unit        milesPerUnit
-     *      GASOLINE   "Gasoline"   "gallons"   28.0
-     *      DIESEL     "Diesel"     "gallons"   34.0
-     *      ELECTRIC   "Electric"   "kWh"        3.2
-     *      HYBRID     "Hybrid"     "gallons"   48.0
-     *
-     * Pass those values to each constant, add three private final fields,
-     * write the constructor, then finish the five methods below.
-     * ------------------------------------------------------------------ */
+    GASOLINE("Gasoline", "gallons", 28.0),
+    DIESEL("Diesel", "gallons", 34.0),
+    ELECTRIC("Electric", "kWh", 3.2),
+    HYBRID("Hybrid", "gallons", 48.0);
 
-    GASOLINE,
-    DIESEL,
-    ELECTRIC,
-    HYBRID;
+    private final String label;
+    private final String unit;
+    private final double milesPerUnit;
+
+    FuelType(String label, String unit, double milesPerUnit) {
+        this.label = label;
+        this.unit = unit;
+        this.milesPerUnit = milesPerUnit;
+    }
 
     public String getLabel() {
-        throw new UnsupportedOperationException("TODO-01");
+        return label;
     }
 
     public String getUnit() {
-        throw new UnsupportedOperationException("TODO-01");
+        return unit;
     }
 
     public double getMilesPerUnit() {
-        throw new UnsupportedOperationException("TODO-01");
+        return milesPerUnit;
     }
 
     /** False for ELECTRIC, true for the rest. */
     public boolean hasEngine() {
-        throw new UnsupportedOperationException("TODO-01");
+        return this != ELECTRIC;
     }
 
     /**
@@ -49,6 +44,20 @@ public enum FuelType {
      * Throws IllegalArgumentException if the text matches nothing.
      */
     public static FuelType fromLabel(String text) {
-        throw new UnsupportedOperationException("TODO-01");
+        if (text == null) {
+            throw new IllegalArgumentException("Unknown fuel type: null");
+        }
+
+        String cleaned = text.trim();
+
+        for (FuelType fuelType : values()) {
+            if (fuelType.label.equalsIgnoreCase(cleaned)) {
+                return fuelType;
+            }
+        }
+
+        throw new IllegalArgumentException(
+                "Unknown fuel type: " + text
+        );
     }
 }
