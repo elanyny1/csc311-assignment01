@@ -152,30 +152,23 @@ public abstract class Vehicle implements Honkable {
         this.fuelCapacity = fuelCapacity;
     }
 
-    /* ------------------------------------------------------------------
-     * TODO-04     commit: TODO-04: implement honk methods from Honkable
-     *
-     * Vehicle says "implements Honkable" but supplies no horn code yet.
-     *
-     *      honk()          print hornSound() on one line
-     *      honk(int)       print hornSound() that many times, one per line.
-     *                      Throw IllegalArgumentException when times < 1.
-     *
-     * Do not implement hornSound() here. Car and Truck each answer it,
-     * and honk() calls whichever one the object actually is.
-     * ------------------------------------------------------------------ */
-
     @Override
     public void honk() {
-        throw new UnsupportedOperationException("TODO-04");
+        System.out.println(hornSound());
     }
 
     @Override
     public void honk(int times) {
-        throw new UnsupportedOperationException("TODO-04");
-    }
+        if (times < 1) {
+            throw new IllegalArgumentException("Invalid value times: " + times);
+        }
 
-    /** Subclasses answer these two. Do not write bodies here. */
+        for (int i = 0; i < times; i++) {
+            System.out.println(hornSound());
+        }
+    }
+    public abstract String hornSound();
+
     public abstract String category();
 
     public abstract double rangeInMiles();
