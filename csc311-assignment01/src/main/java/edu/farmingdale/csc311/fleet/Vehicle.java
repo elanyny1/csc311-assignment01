@@ -167,41 +167,51 @@ public abstract class Vehicle implements Honkable {
             System.out.println(hornSound());
         }
     }
+
     public abstract String hornSound();
 
     public abstract String category();
 
     public abstract double rangeInMiles();
 
-    /* ------------------------------------------------------------------
-     * TODO-05     commit: TODO-05: add toString, equals and hashCode
-     *
-     * toString() returns exactly this shape, built with String.format:
-     *
-     *   2023 Honda Accord [VIN=1HGCM82633A004352] color=Blue, wheels=4,
-     *   engine=2.0L, fuel=Gasoline, capacity=15.8 gallons
-     *
-     * (one line, no period at the end). When fuelType.hasEngine() is false
-     * the engine part reads engine=n/a instead of a number. Use getLabel()
-     * for the fuel and getUnit() after the capacity.
-     *
-     * Two vehicles are equal when their VINs match. Follow the usual steps:
-     * same object, then instanceof, then compare the VIN strings.
-     * Base hashCode on the VIN so it agrees with equals.
-     * ------------------------------------------------------------------ */
-
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("TODO-05");
+        String engine = fuelType.hasEngine()
+                ? String.format("%.1fL", engineSize)
+                : "n/a";
+
+        return String.format(
+                "%d %s %s [VIN=%s] color=%s, wheels=%d, engine=%s, fuel=%s, capacity=%.1f %s",
+                year,
+                make,
+                model,
+                vin,
+                color,
+                wheels,
+                engine,
+                fuelType.getLabel(),
+                fuelCapacity,
+                fuelType.getUnit()
+        );
     }
 
     @Override
     public boolean equals(Object other) {
-        throw new UnsupportedOperationException("TODO-05");
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Vehicle)) {
+            return false;
+        }
+
+        Vehicle vehicle = (Vehicle) other;
+
+        return vin.equals(vehicle.vin);
     }
 
     @Override
     public int hashCode() {
-        throw new UnsupportedOperationException("TODO-05");
+        return vin.hashCode();
     }
 }
