@@ -3,7 +3,7 @@ package edu.farmingdale.csc311.fleet;
 /**
  * A passenger car: a Vehicle plus a door count.
  *
- * @author YOUR NAME HERE
+ * @author Elan Yankovsky
  */
 public class Car extends Vehicle {
 
