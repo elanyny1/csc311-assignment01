@@ -58,12 +58,11 @@ public abstract class Vehicle implements Honkable {
             );
         }
 
-        this.year = 0;
-        this.color = null;
-        this.wheels = 0;
+        this.vin = vin.trim().toUpperCase();
+        this.make = make;
+        this.model = model;
         this.engineSize = engineSize;
         this.fuelType = fuelType;
-        this.fuelCapacity = 0.0;
 
         setYear(year);
         setColor(color);
