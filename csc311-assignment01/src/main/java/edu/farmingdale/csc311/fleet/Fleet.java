@@ -114,48 +114,72 @@ public class Fleet {
         return result;
     }
 
-    /* ------------------------------------------------------------------
-     * TODO-09     commit: TODO-09: implement Fleet reports
-     *
-     * None of these may reorder or change the internal array. Start from
-     * toArray() when you need a different order.
-     *
-     *    sortedByYear()
-     *        a new array ordered by year, oldest first. When two years
-     *        match, order by make A to Z ignoring case
-     *        (String.compareToIgnoreCase). Write the sort yourself:
-     *        selection sort or insertion sort, your choice. No Arrays.sort,
-     *        no Comparator.
-     *
-     *    countWithFuelType(FuelType fuel)
-     *        how many vehicles use that fuel.
-     *
-     *    averageEngineSize()
-     *        average engine size over the vehicles whose fuel type has an
-     *        engine. Electrics are left out, otherwise their 0.0 drags the
-     *        number down and it means nothing. Return 0.0 when the count is
-     *        zero, and watch the division.
-     *
-     *    longestRange()
-     *        the vehicle with the largest rangeInMiles(), or null when the
-     *        fleet is empty. On a tie keep the one added first. Note that
-     *        this compares cars against trucks without a single if about
-     *        the type: rangeInMiles() already knows which formula to run.
-     * ------------------------------------------------------------------ */
-
     public Vehicle[] sortedByYear() {
-        throw new UnsupportedOperationException("TODO-09");
+        Vehicle[] result = toArray();
+
+        // Selection sort
+        for (int i = 0; i < result.length - 1; i++) {
+            int smallest = i;
+
+            for (int j = i + 1; j < result.length; j++) {
+                if (result[j].getYear() < result[smallest].getYear()
+                        || (result[j].getYear() == result[smallest].getYear()
+                        && result[j].getMake().compareToIgnoreCase(result[smallest].getMake()) < 0)) {
+                    smallest = j;
+                }
+            }
+
+            Vehicle temp = result[i];
+            result[i] = result[smallest];
+            result[smallest] = temp;
+        }
+
+        return result;
     }
 
     public int countWithFuelType(FuelType fuel) {
-        throw new UnsupportedOperationException("TODO-09");
+        int count = 0;
+
+        for (int i = 0; i < this.count; i++) {
+            if (vehicles[i].getFuelType() == fuel) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public double averageEngineSize() {
-        throw new UnsupportedOperationException("TODO-09");
+        double total = 0.0;
+        int engineCount = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (vehicles[i].getFuelType().hasEngine()) {
+                total += vehicles[i].getEngineSize();
+                engineCount++;
+            }
+        }
+
+        if (engineCount == 0) {
+            return 0.0;
+        }
+
+        return total / engineCount;
     }
 
     public Vehicle longestRange() {
-        throw new UnsupportedOperationException("TODO-09");
+        if (count == 0) {
+            return null;
+        }
+
+        Vehicle longest = vehicles[0];
+
+        for (int i = 1; i < count; i++) {
+            if (vehicles[i].rangeInMiles() > longest.rangeInMiles()) {
+                longest = vehicles[i];
+            }
+        }
+
+        return longest;
     }
 }
